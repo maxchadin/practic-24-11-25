@@ -19,6 +19,19 @@ struct Point: Planar
     int data[2];
 };
 
+struct Vector: Planar
+{
+  Vector(const Point& start, const Point& end);
+  virtual int x() const override;
+  virtual int y() const override;
+  virtual int abs_sqr() const override;
+  virtual ~Vector() = default;
+private:
+  Point a;
+  Point b;
+};
+
+
 Planar* make(std::istream& is);
 Planar* make(size_t pl);
 void draw(Planar* pl);
@@ -82,16 +95,15 @@ Planar* mostleft(Planar** pls, size_t k)
 
 Planar* make(size_t id)
 {
-  Planar* r = nullptr
   switch(id)
   {
     case 0:
-      r=new Point(0,0);
-      break;
+      return new Point(0,0);
+    case 1:
+      return new Vector(Point(0,0), Point(1,1));
     default:
       throw std::logic_error("bad id");
   }
-  return r;
 }
 
 Point::Point(int xx, int yy):
@@ -112,4 +124,25 @@ int Point::y() const
 int Point::abs_sqr() const
 {
   return x()*x() + y()*y();
+}
+
+Vector::Vector(const Point& start, const Point& end)
+  : a(start), b(end)
+{}
+
+int Vector::x() const
+{
+  return b.x() - a.x();
+}
+
+int Vector::y() const
+{
+  return b.y() - a.y();
+}
+
+int Vector::abs_sqr() const
+{
+  int dx = x();
+  int dy = y();
+  return dx * dx + dy * dy;
 }
