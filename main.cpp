@@ -42,7 +42,7 @@ int main()
   Planar** ml = mostleft(pls, s);
   if (ml == pls+s)
   {
-    std::cout << "";
+    std::cout << "Not found";
     free_planars(pls,s);
     delete[] pls;
     return 0;
